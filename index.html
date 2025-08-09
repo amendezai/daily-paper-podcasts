@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Daily Paper Podcasts</title>
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    // configure Tailwind dark mode support via class
+    tailwind.config = {
+      darkMode: 'class',
+    };
+  </script>
+  <!-- Heroicons -->
+  <script src="https://unpkg.com/feather-icons"></script>
+  <style>
+    /* Custom styles for background pattern */
+    .hero-bg {
+      background-image: url('https://images.unsplash.com/photo-1454165205744-3b78555e5572?auto=format&fit=crop&w=1200&q=80');
+      background-size: cover;
+      background-position: center;
+    }
+    .card-transition {
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .card-transition:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+    }
+  </style>
+</head>
+<body class="bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-200 font-sans">
+  <header class="hero-bg relative h-screen flex flex-col justify-center items-center text-center text-white p-6">
+    <div class="absolute top-0 right-0 m-4 flex items-center space-x-4">
+      <!-- Search bar -->
+      <div id="searchContainer" class="hidden md:flex items-center bg-white/20 backdrop-blur rounded-lg p-2 focus-within:ring-2 focus-within:ring-indigo-500 transition-colors">
+        <input type="text" placeholder="Search episodes..." class="bg-transparent placeholder-gray-200 text-sm focus:outline-none" />
+        <span data-feather="search"></span>
+      </div>
+      <!-- Light/Dark toggle -->
+      <button id="modeToggle" class="p-2 rounded-full bg-white/20 hover:bg-white/30 transition-colors" aria-label="Toggle dark mode">
+        <span data-feather="sun"></span>
+      </button>
+    </div>
+    <h1 class="text-5xl md:text-7xl font-bold mb-4 drop-shadow">Daily Paper Podcasts</h1>
+    <p class="text-xl md:text-2xl mb-8 drop-shadow">From preprint to podcast — explore research made audible.</p>
+    <div class="space-x-4">
+      <a href="#gallery" class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-lg transition-colors">Browse Episodes</a>
+    </div>
+    <!-- Mobile search button -->
+    <button id="mobileSearchBtn" class="md:hidden absolute top-4 right-4 bg-white/20 p-2 rounded-full focus:outline-none" aria-label="Open search">
+      <span data-feather="search"></span>
+    </button>
+    <div id="mobileSearchDropdown" class="hidden absolute top-16 right-4 bg-white dark:bg-gray-800 rounded-lg shadow-lg p-4 w-64">
+      <input type="text" placeholder="Search episodes..." class="w-full bg-transparent border-b border-gray-300 dark:border-gray-600 py-1 px-2 text-gray-800 dark:text-gray-200 focus:outline-none" />
+    </div>
+  </header>
+
+  <!-- Gallery Section -->
+  <main id="gallery" class="max-w-7xl mx-auto px-4 py-12">
+    <h2 class="text-3xl md:text-4xl font-semibold text-center mb-10">Podcast Episodes</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <!-- Seeded podcast cards -->
+      <!-- Card Template Example -->
+      <div class="bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-md card-transition">
+        <div class="p-4 space-y-2">
+          <h3 class="text-xl font-semibold">Attention Is All You Need</h3>
+          <p class="text-sm text-gray-600 dark:text-gray-400">A novel network architecture, the Transformer, based solely on attention mechanisms...</p>
+          <div class="flex flex-wrap gap-2 text-xs mt-2">
+            <span class="bg-indigo-100 text-indigo-800 dark:bg-indigo-900 dark:text-indigo-100 px-2 py-1 rounded-full">#LLM</span>
+            <span class="bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-100 px-2 py-1 rounded-full">#MachineLearning</span>
+            <span class="bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100 px-2 py-1 rounded-full">#NLP</span>
+          </div>
+          <audio controls class="w-full mt-4">
+            <source src="audio/sample1.mp3" type="audio/mpeg" />
+            Your browser does not support the audio element.
+          </audio>
+          <div class="mt-4 space-x-4">
+            <button class="text-indigo-600 dark:text-indigo-400 underline" onclick="toggleAccordion(this, 'notes1')">Read Notes</button>
+            <button class="text-indigo-600 dark:text-indigo-400 underline" onclick="toggleAccordion(this, 'critique1')">Critique</button>
+            <button class="text-indigo-600 dark:text-indigo-400 underline" onclick="toggleAccordion(this, 'next1')">Next Directions</button>
+          </div>
+          <div id="notes1" class="hidden mt-2">
+            <ul class="list-disc pl-5 text-sm space-y-1">
+              <li>Introduces the Transformer architecture.</li>
+              <li>Replaces recurrence with attention mechanisms.</li>
+              <li>Demonstrates state-of-the-art results on machine translation tasks.</li>
+            </ul>
+          </div>
+          <div id="critique1" class="hidden mt-2">
+            <ul class="list-disc pl-5 text-sm space-y-1">
+              <li>Requires substantial computational resources.</li>
+              <li>Lacks inductive biases present in RNNs.</li>
+              <li>May struggle with very long sequences without further tuning.</li>
+            </ul>
+          </div>
+          <div id="next1" class="hidden mt-2">
+            <ul class="list-disc pl-5 text-sm space-y-1">
+              <li>Explore efficient attention mechanisms.</li>
+              <li>Adapt transformers for multimodal tasks.</li>
+              <li>Investigate sparsity and modularization strategies.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <!-- Second card -->
+      <div class="bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-md card-transition">
+        <div class="p-4 space-y-2">
+          <h3 class="text-xl font-semibold">Deep Residual Learning for Image Recognition</h3>
+          <p class="text-sm text-gray-600 dark:text-gray-400">Introduces residual connections enabling extremely deep neural networks to be trained effectively...</p>
+          <div class="flex flex-wrap gap-2 text-xs mt-2">
+            <span class="bg-indigo-100 text-indigo-800 dark:bg-indigo-900 dark:text-indigo-100 px-2 py-1 rounded-full">#CVPR2016</span>
+            <span class="bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-100 px-2 py-1 rounded-full">#ComputerVision</span>
+            <span class="bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100 px-2 py-1 rounded-full">#DeepLearning</span>
+          </div>
+          <audio controls class="w-full mt-4">
+            <source src="audio/sample2.mp3" type="audio/mpeg" />
+            Your browser does not support the audio element.
+          </audio>
+          <div class="mt-4 space-x-4">
+            <button class="text-indigo-600 dark:text-indigo-400 underline" onclick="toggleAccordion(this, 'notes2')">Read Notes</button>
+            <button class="text-indigo-600 dark:text-indigo-400 underline" onclick="toggleAccordion(this, 'critique2')">Critique</button>
+            <button class="text-indigo-600 dark:text-indigo-400 underline" onclick="toggleAccordion(this, 'next2')">Next Directions</button>
+          </div>
+          <div id="notes2" class="hidden mt-2">
+            <ul class="list-disc pl-5 text-sm space-y-1">
+              <li>Proposes residual blocks to ease training of deep networks.</li>
+              <li>Achieves state-of-the-art results on ImageNet.</li>
+              <li>Shows that depth is crucial for representation learning.</li>
+            </ul>
+          </div>
+          <div id="critique2" class="hidden mt-2">
+            <ul class="list-disc pl-5 text-sm space-y-1">
+              <li>Training very deep networks may still require careful initialization.</li>
+              <li>Increases computational complexity.</li>
+            </ul>
+          </div>
+          <div id="next2" class="hidden mt-2">
+            <ul class="list-disc pl-5 text-sm space-y-1">
+              <li>Investigate alternative skip connection designs.</li>
+              <li>Apply residual concepts to sequence models.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <!-- Third card -->
+      <div class="bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-md card-transition">
+        <div class="p-4 space-y-2">
+          <h3 class="text-xl font-semibold">Learning Transferable Visual Models From Natural Language Supervision</h3>
+          <p class="text-sm text-gray-600 dark:text-gray-400">CLIP leverages natural language supervision at scale to learn vision representations...</p>
+          <div class="flex flex-wrap gap-2 text-xs mt-2">
+            <span class="bg-indigo-100 text-indigo-800 dark:bg-indigo-900 dark:text-indigo-100 px-2 py-1 rounded-full">#ICML2021</span>
+            <span class="bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-100 px-2 py-1 rounded-full">#ZeroShot</span>
+            <span class="bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100 px-2 py-1 rounded-full">#VisionLanguage</span>
+          </div>
+          <audio controls class="w-full mt-4">
+            <source src="audio/sample3.mp3" type="audio/mpeg" />
+            Your browser does not support the audio element.
+          </audio>
+          <div class="mt-4 space-x-4">
+            <button class="text-indigo-600 dark:text-indigo-400 underline" onclick="toggleAccordion(this, 'notes3')">Read Notes</button>
+            <button class="text-indigo-600 dark:text-indigo-400 underline" onclick="toggleAccordion(this, 'critique3')">Critique</button>
+            <button class="text-indigo-600 dark:text-indigo-400 underline" onclick="toggleAccordion(this, 'next3')">Next Directions</button>
+          </div>
+          <div id="notes3" class="hidden mt-2">
+            <ul class="list-disc pl-5 text-sm space-y-1">
+              <li>Uses contrastive learning between images and text.</li>
+              <li>Yields strong zero-shot performance on diverse tasks.</li>
+              <li>Highlights the power of natural language supervision.</li>
+            </ul>
+          </div>
+          <div id="critique3" class="hidden mt-2">
+            <ul class="list-disc pl-5 text-sm space-y-1">
+              <li>Model training is resource intensive.</li>
+              <li>Performance depends on quality of internet-sourced data.</li>
+            </ul>
+          </div>
+          <div id="next3" class="hidden mt-2">
+            <ul class="list-disc pl-5 text-sm space-y-1">
+              <li>Scale up with curated multimodal datasets.</li>
+              <li>Explore cross-modal attention mechanisms.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <!-- Fourth card -->
+      <div class="bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-md card-transition">
+        <div class="p-4 space-y-2">
+          <h3 class="text-xl font-semibold">Neural Radiance Fields (NeRF)</h3>
+          <p class="text-sm text-gray-600 dark:text-gray-400">Representing scenes as neural radiance fields for rendering complex 3D scenes...</p>
+          <div class="flex flex-wrap gap-2 text-xs mt-2">
+            <span class="bg-indigo-100 text-indigo-800 dark:bg-indigo-900 dark:text-indigo-100 px-2 py-1 rounded-full">#SIGGRAPH2020</span>
+            <span class="bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-100 px-2 py-1 rounded-full">#3DReconstruction</span>
+            <span class="bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100 px-2 py-1 rounded-full">#Rendering</span>
+          </div>
+          <audio controls class="w-full mt-4">
+            <source src="audio/sample4.mp3" type="audio/mpeg" />
+            Your browser does not support the audio element.
+          </audio>
+          <div class="mt-4 space-x-4">
+            <button class="text-indigo-600 dark:text-indigo-400 underline" onclick="toggleAccordion(this, 'notes4')">Read Notes</button>
+            <button class="text-indigo-600 dark:text-indigo-400 underline" onclick="toggleAccordion(this, 'critique4')">Critique</button>
+            <button class="text-indigo-600 dark:text-indigo-400 underline" onclick="toggleAccordion(this, 'next4')">Next Directions</button>
+          </div>
+          <div id="notes4" class="hidden mt-2">
+            <ul class="list-disc pl-5 text-sm space-y-1">
+              <li>Implicitly represents 3D scenes using coordinate-based neural networks.</li>
+              <li>Produces photorealistic views from sparse inputs.</li>
+              <li>Enables novel view synthesis with high quality.</li>
+            </ul>
+          </div>
+          <div id="critique4" class="hidden mt-2">
+            <ul class="list-disc pl-5 text-sm space-y-1">
+              <li>Slow rendering speeds hinder real-time applications.</li>
+              <li>Requires many input views to reconstruct complex scenes.</li>
+            </ul>
+          </div>
+          <div id="next4" class="hidden mt-2">
+            <ul class="list-disc pl-5 text-sm space-y-1">
+              <li>Accelerate NeRF inference via learned encodings.</li>
+              <li>Combine NeRF with generative modeling for scene synthesis.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <!-- Fifth card -->
+      <div class="bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-md card-transition">
+        <div class="p-4 space-y-2">
+          <h3 class="text-xl font-semibold">AlphaFold: Protein Structure Prediction</h3>
+          <p class="text-sm text-gray-600 dark:text-gray-400">Deep learning system predicting protein structures with unprecedented accuracy...</p>
+          <div class="flex flex-wrap gap-2 text-xs mt-2">
+            <span class="bg-indigo-100 text-indigo-800 dark:bg-indigo-900 dark:text-indigo-100 px-2 py-1 rounded-full">#Nature2020</span>
+            <span class="bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-100 px-2 py-1 rounded-full">#Biology</span>
+            <span class="bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100 px-2 py-1 rounded-full">#DeepLearning</span>
+          </div>
+          <audio controls class="w-full mt-4">
+            <source src="audio/sample5.mp3" type="audio/mpeg" />
+            Your browser does not support the audio element.
+          </audio>
+          <div class="mt-4 space-x-4">
+            <button class="text-indigo-600 dark:text-indigo-400 underline" onclick="toggleAccordion(this, 'notes5')">Read Notes</button>
+            <button class="text-indigo-600 dark:text-indigo-400 underline" onclick="toggleAccordion(this, 'critique5')">Critique</button>
+            <button class="text-indigo-600 dark:text-indigo-400 underline" onclick="toggleAccordion(this, 'next5')">Next Directions</button>
+          </div>
+          <div id="notes5" class="hidden mt-2">
+            <ul class="list-disc pl-5 text-sm space-y-1">
+              <li>Predicts protein 3D structures from amino acid sequences.</li>
+              <li>Outperforms traditional computational methods.</li>
+              <li>Enables insights into molecular biology and drug design.</li>
+            </ul>
+          </div>
+          <div id="critique5" class="hidden mt-2">
+            <ul class="list-disc pl-5 text-sm space-y-1">
+              <li>Limited by training data and cannot capture rare folds.</li>
+              <li>Interpretability of model decisions remains challenging.</li>
+            </ul>
+          </div>
+          <div id="next5" class="hidden mt-2">
+            <ul class="list-disc pl-5 text-sm space-y-1">
+              <li>Extend to protein–protein interactions.</li>
+              <li>Integrate with experimental validation pipelines.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <!-- Sixth card -->
+      <div class="bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-md card-transition">
+        <div class="p-4 space-y-2">
+          <h3 class="text-xl font-semibold">Large Language Models: A Survey</h3>
+          <p class="text-sm text-gray-600 dark:text-gray-400">Comprehensive overview of large language models, training techniques and applications...</p>
+          <div class="flex flex-wrap gap-2 text-xs mt-2">
+            <span class="bg-indigo-100 text-indigo-800 dark:bg-indigo-900 dark:text-indigo-100 px-2 py-1 rounded-full">#Survey</span>
+            <span class="bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-100 px-2 py-1 rounded-full">#AI</span>
+            <span class="bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100 px-2 py-1 rounded-full">#Meta</span>
+          </div>
+          <audio controls class="w-full mt-4">
+            <source src="audio/sample6.mp3" type="audio/mpeg" />
+            Your browser does not support the audio element.
+          </audio>
+          <div class="mt-4 space-x-4">
+            <button class="text-indigo-600 dark:text-indigo-400 underline" onclick="toggleAccordion(this, 'notes6')">Read Notes</button>
+            <button class="text-indigo-600 dark:text-indigo-400 underline" onclick="toggleAccordion(this, 'critique6')">Critique</button>
+            <button class="text-indigo-600 dark:text-indigo-400 underline" onclick="toggleAccordion(this, 'next6')">Next Directions</button>
+          </div>
+          <div id="notes6" class="hidden mt-2">
+            <ul class="list-disc pl-5 text-sm space-y-1">
+              <li>Surveys architectures, training strategies and datasets.</li>
+              <li>Discusses alignment, safety, and ethical considerations.</li>
+            </ul>
+          </div>
+          <div id="critique6" class="hidden mt-2">
+            <ul class="list-disc pl-5 text-sm space-y-1">
+              <li>Some conclusions may become outdated quickly.</li>
+              <li>Survey scope may miss emerging research areas.</li>
+            </ul>
+          </div>
+          <div id="next6" class="hidden mt-2">
+            <ul class="list-disc pl-5 text-sm space-y-1">
+              <li>Update survey with performance benchmarks regularly.</li>
+              <li>Incorporate insights from user studies.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Suggest a Paper Button -->
+  <button id="suggestBtn" class="fixed bottom-8 right-8 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-3 rounded-full shadow-lg flex items-center space-x-2">
+    <span data-feather="plus"></span>
+    <span>Suggest a Paper</span>
+  </button>
+  <!-- Suggest Modal -->
+  <div id="suggestModal" class="fixed inset-0 bg-black/50 backdrop-blur flex items-center justify-center hidden">
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl p-6 w-11/12 max-w-lg">
+      <div class="flex justify-between items-center mb-4">
+        <h3 class="text-xl font-semibold">Suggest a Paper</h3>
+        <button id="closeModal" class="p-1" aria-label="Close modal">
+          <span data-feather="x"></span>
+        </button>
+      </div>
+      <form>
+        <label class="block mb-2">
+          <span class="text-sm">Paper Title</span>
+          <input type="text" class="mt-1 w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md bg-transparent" placeholder="Enter title" />
+        </label>
+        <label class="block mb-2">
+          <span class="text-sm">arXiv Link</span>
+          <input type="url" class="mt-1 w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md bg-transparent" placeholder="https://arxiv.org/abs/..." />
+        </label>
+        <label class="block mb-4">
+          <span class="text-sm">Comments (optional)</span>
+          <textarea class="mt-1 w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md bg-transparent" rows="3" placeholder="Your suggestions"></textarea>
+        </label>
+        <button type="button" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md">Submit</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="bg-gray-100 dark:bg-gray-900 text-gray-600 dark:text-gray-400 py-8 mt-12">
+    <div class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+      <div>
+        <p class="font-semibold">Powered by GPT + arXiv + PaperPod Engine</p>
+        <nav class="flex space-x-4 mt-2">
+          <a href="#" class="hover:underline">Contact</a>
+          <a href="#" class="hover:underline">Privacy</a>
+          <a href="#" class="hover:underline">@PaperPodHub</a>
+        </nav>
+      </div>
+      <form class="flex items-center space-x-2">
+        <input type="email" placeholder="Get new episodes weekly" class="p-2 border border-gray-300 dark:border-gray-600 rounded-md bg-transparent text-gray-800 dark:text-gray-200 focus:outline-none" />
+        <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md">Subscribe</button>
+      </form>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script>
+    // Initialize Feather icons
+    feather.replace();
+
+    // Dark mode toggle with localStorage
+    const modeToggle = document.getElementById('modeToggle');
+    const rootElement = document.documentElement;
+    const currentTheme = localStorage.getItem('theme');
+    if (currentTheme === 'dark') {
+      rootElement.classList.add('dark');
+    }
+    modeToggle.addEventListener('click', () => {
+      rootElement.classList.toggle('dark');
+      localStorage.setItem('theme', rootElement.classList.contains('dark') ? 'dark' : 'light');
+    });
+
+    // Mobile search toggle
+    const mobileSearchBtn = document.getElementById('mobileSearchBtn');
+    const mobileSearchDropdown = document.getElementById('mobileSearchDropdown');
+    mobileSearchBtn.addEventListener('click', () => {
+      mobileSearchDropdown.classList.toggle('hidden');
+    });
+
+    // Suggest modal logic
+    const suggestBtn = document.getElementById('suggestBtn');
+    const suggestModal = document.getElementById('suggestModal');
+    const closeModal = document.getElementById('closeModal');
+    suggestBtn.addEventListener('click', () => {
+      suggestModal.classList.remove('hidden');
+    });
+    closeModal.addEventListener('click', () => {
+      suggestModal.classList.add('hidden');
+    });
+    // Close modal on outside click
+    suggestModal.addEventListener('click', (e) => {
+      if (e.target === suggestModal) {
+        suggestModal.classList.add('hidden');
+      }
+    });
+
+    // Accordion toggle function
+    window.toggleAccordion = function(button, id) {
+      const section = document.getElementById(id);
+      if (!section) return;
+      const isHidden = section.classList.contains('hidden');
+      // Hide all sibling accordions within the same card
+      const card = button.closest('div').parentNode;
+      card.querySelectorAll('div[id^="notes"], div[id^="critique"], div[id^="next"]').forEach(el => {
+        el.classList.add('hidden');
+      });
+      // Toggle the clicked one
+      section.classList.toggle('hidden', !isHidden);
+    }
+  </script>
+</body>
+</html>
